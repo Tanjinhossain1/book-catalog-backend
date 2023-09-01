@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const app = require('./app');
-const config = require('./config');
-const { errorlogger, logger }  = require('./shared/logger');
+import app from './app';
+import config from './config';
+import { errorlogger, logger } from './shared/logger';
 
 
 async function bootstrap() {
