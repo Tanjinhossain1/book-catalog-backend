@@ -1,4 +1,6 @@
-buildCommand: yarn
-env:
-  - key: NODE_VERSION
-    value: 16.20.2
+services:
+  - name: web
+    buildCommand: yarn
+    env:
+      - key: NODE_VERSION
+        value: 16.20.2
