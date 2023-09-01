@@ -1,6 +1,7 @@
-import app from './app';
-import config from './config/index';
-import { errorlogger, logger } from './shared/logger';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const app = require('./app'); 
+const config = require('./config/index'); 
+const { errorlogger, logger } = require('./shared/logger');
 
 const port = process.env.PORT || 3000;
 
