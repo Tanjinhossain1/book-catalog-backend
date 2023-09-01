@@ -1,4 +1,5 @@
-import app from './app';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const app = require('./app');
 import config from './config';
 import { errorlogger, logger } from './shared/logger';
 
