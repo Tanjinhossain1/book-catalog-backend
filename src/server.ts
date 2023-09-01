@@ -1,7 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const app = require('./app');
-import config from './config';
-import { errorlogger, logger } from './shared/logger';
+const config = require('./config');
+const { errorlogger, logger }  = require('./shared/logger');
 
 
 async function bootstrap() {
