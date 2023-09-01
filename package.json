@@ -5,7 +5,7 @@
   "description": "",
   "main": "src/server.ts",
   "engines": {
-    "node": "^16.14.0"
+    "node": ">=16"
   },
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only src/server.ts",
