@@ -20,7 +20,7 @@ async function bootstrap() {
     process.exit(1);
   };
 
-  const unexpectedErrorHandler = (error: unknown) => {
+  const unexpectedErrorHandler = (error) => {
     errorlogger.error(error);
     exitHandler();
   };
