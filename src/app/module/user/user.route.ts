@@ -9,5 +9,5 @@ router.post(
     '/',
     UserController.insertIntoDB
 )
-
+ 
 export const  UserRouter = router;
