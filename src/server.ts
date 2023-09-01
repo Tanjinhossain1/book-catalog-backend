@@ -2,7 +2,7 @@
 
 const app = require('./app').default;
 const config = require('./config').default;
-import { errorlogger, logger } from './shared/logger';
+const {errorlogger, logger} = require('./shared/logger').default;
 
 
 async function bootstrap() {
