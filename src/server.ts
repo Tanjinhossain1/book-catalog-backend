@@ -1,5 +1,7 @@
-import app from './app';
-import config from './config';
+/* eslint-disable @typescript-eslint/no-var-requires */
+
+const app = require('./app').default;
+const config = require('./config').default;
 import { errorlogger, logger } from './shared/logger';
 
 
