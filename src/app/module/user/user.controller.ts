@@ -16,20 +16,50 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 })
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-    // const filters = pick(req.query,[
-    //     'searchTerm'
-    // ]);
+     
     const options = pick(req.query,['limit', 'page', 'sortBy', 'sortOrder']);
     const result = await UserService.getAllFromDB(options);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: 'User fetched successfully',
-        meta: result.meta,
-        data: result.data
+        data: result
     });
 })
+const getSingleUserFromDB = catchAsync(async (req: Request, res: Response) => { 
+    const result = await UserService.getSingleUserFromDB(req.params.id);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'One User get successfully',
+        data: result
+    });
+})
+
+const updateOneUser = catchAsync(async (req: Request, res: Response) => { 
+    const result = await UserService.updateOneUser(req.params.id,req.body);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Update User successfully',
+        data: result
+    });
+})
+
+const deleteOneUser = catchAsync(async (req: Request, res: Response) => { 
+    const result = await UserService.deleteOneUser(req.params.id);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'delete User successfully',
+        data: result
+    });
+})
+
 export const UserController = {
     insertIntoDB,
     getAllFromDB,
+    getSingleUserFromDB,
+    updateOneUser,
+    deleteOneUser
 };

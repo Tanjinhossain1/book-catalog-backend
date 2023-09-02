@@ -46,6 +46,7 @@ model Book {
   categoryId      String
   category        Category          @relation(fields: [categoryId], references: [id])
   reviews         ReviewAndRating[]
+  orderedBook         OrderedBook[]
 }
 
 model ReviewAndRating {
@@ -64,4 +65,14 @@ model Order {
   status       String   @default("pending")
   createdAt    DateTime
   user         User     @relation(fields: [userId], references: [id])
+  orderedBook OrderedBook[]
+}
+// OrderedBook model (Approach 2)
+model OrderedBook {
+  id        String    @id @default(uuid())
+  orderId   String
+  bookId    String
+  quantity  Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  book      Book    @relation(fields: [bookId], references: [id])
 }
