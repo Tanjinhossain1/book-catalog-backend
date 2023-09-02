@@ -42,7 +42,7 @@ model Book {
   author          String
   price           Float
   genre           String
-  publicationDate DateTime
+  publicationDate DateTime @default(now())
   categoryId      String
   category        Category          @relation(fields: [categoryId], references: [id])
   reviews         ReviewAndRating[]
