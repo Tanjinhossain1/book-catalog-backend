@@ -3,6 +3,11 @@ import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
 import prisma from "../../../shared/prisma";
+import ApiError from "../../../errors/ApiError";
+import httpStatus from "http-status";
+import { createToken } from "../../../helpers/createJwtToken";
+import { Secret } from "jsonwebtoken";
+import { ILoginUserResponseType, ILoginUserType } from "./user.interface";
 
 const selectObject = {
     id: true,
@@ -74,10 +79,46 @@ const deleteOneUser = async (id: string): Promise<Partial<User> | null> => {
     return result;
 };
 
+
+export const loginUser = async (
+    user: ILoginUserType
+  ): Promise<ILoginUserResponseType> => {
+    const { email, password } = user;
+  
+    const isUserExist = await prisma.user.findUnique({where:{
+        email: email,
+        password: password
+    }});
+  
+    if (!isUserExist) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'User dose not exist !');
+    }
+  
+     
+    const { id: userId, role } = isUserExist;
+  
+    const accessToken = createToken(
+      { userId, role },
+      process.env.JWT_ACCESS_SECRET as Secret,
+      process.env.JWT_EXPIRES_IN as string
+    );
+  
+    const refreshToken = createToken(
+      { userId, role },
+      process.env.JWT_REFRESH_SECRET as Secret,
+      process.env.JWT_REFRESH_EXPIRES as string
+    );
+  
+    return {
+      accessToken,
+      refreshToken,
+    };
+  };
 export const UserService = {
     insertIntoDB,
     getAllFromDB,
     getSingleUserFromDB,
     updateOneUser,
     deleteOneUser,
+    loginUser
 }

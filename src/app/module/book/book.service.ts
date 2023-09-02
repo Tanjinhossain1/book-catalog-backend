@@ -39,7 +39,7 @@ const getAllFromDB = async (
 
     const andConditions = [];
     
-    if (search) {  
+    if (search !== undefined) {  
         andConditions.push({
             OR: bookSearchableFields.map((field) => ({
                 [field]: {
@@ -75,12 +75,6 @@ const getAllFromDB = async (
 
     const whereConditions: Prisma.BookWhereInput =
         andConditions.length > 0 ? { AND: andConditions } : {};
-whereConditions.OR =bookSearchableFields.map((field) => ({
-        [field]: {
-            contains: search,
-            mode: 'insensitive',
-        },
-    }))
 
     const result = await prisma.book.findMany({
         where: whereConditions,
@@ -117,6 +111,20 @@ const getSingleBookFromDB = async (id: string): Promise<Partial<Book> | null> =>
     return result;
 };
 
+const getSingleBookFromDBCategoryId = async (id: string): Promise<Book[]> => {
+    const result = await prisma.book.findMany({
+        where: {
+            categoryId: id
+        },
+        include: {
+            category: true,
+            orderedBook: true,
+            reviews: true
+        }
+    });
+    return result;
+};
+
 const updateOneBook = async (id: string, payload: Partial<Book>): Promise<Partial<Book> | null> => {
     const result = await prisma.book.update({
         where: {
@@ -141,6 +149,7 @@ export const BookService = {
     insertIntoDB,
     getAllFromDB,
     getSingleBookFromDB,
+    getSingleBookFromDBCategoryId,
     updateOneBook,
     deleteOneBook,
 }

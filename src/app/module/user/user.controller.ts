@@ -4,6 +4,7 @@ import catchAsync from "../../../shared/catchAsync";
 import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
 import { UserService } from "./user.service";
+import { ILoginUserResponseType } from "./user.interface";
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
     const result = await UserService.insertIntoDB(req.body);
@@ -56,10 +57,33 @@ const deleteOneUser = catchAsync(async (req: Request, res: Response) => {
     });
 })
 
+export const loginUser = catchAsync(
+    async (req: Request, res: Response) => {
+      const { ...loginData } = req.body;
+      const result = await UserService.loginUser(loginData);
+  
+      const { refreshToken, ...others } = result;
+  
+      const cookieOptions = {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+      };
+  
+      res.cookie('refreshToken', refreshToken, cookieOptions);
+  
+      sendResponse<ILoginUserResponseType>(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User Login Successfully !',
+        data: others,
+      });
+    }
+  );
 export const UserController = {
     insertIntoDB,
     getAllFromDB,
     getSingleUserFromDB,
     updateOneUser,
-    deleteOneUser
+    deleteOneUser,
+    loginUser
 };
