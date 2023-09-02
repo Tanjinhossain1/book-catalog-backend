@@ -16,7 +16,7 @@
     "start": "dist/server.js",
     "postinstall": "prisma generate"
   },
-  "name": "book-catalog-assaignment-sample-startar",
+  "name": "book-catalog-backend",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -31,6 +31,7 @@
     "express": "^4.18.2",
     "http-status": "^1.6.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.5.0"
+    "mongoose": "^7.5.0",
+    "vercel": "^32.1.0"
   }
 }
