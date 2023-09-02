@@ -1,23 +1,24 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
-  output   = "./generated/client"
-
 }
 
 datasource db {
-  provider = "postgresql" // Use PostgreSQL as the database provider
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 model User {
-  id         String   @id @default(uuid())
+  id         String       @id @default(uuid())
   name       String
-  email      String   @unique
+  email      String       @unique
   password   String
   role       AllUserRoles
   contactNo  String?
   address    String?
   profileImg String?
+  orders     Order[]
 
   @@map("user")
 }
@@ -25,4 +26,42 @@ model User {
 enum AllUserRoles {
   ADMIN
   CUSTOMER
+}
+
+// schema.prisma
+
+model Category {
+  id    String @id @default(uuid())
+  title String
+  books Book[]
+}
+
+model Book {
+  id              String            @id @default(uuid())
+  title           String
+  author          String
+  price           Float
+  genre           String
+  publicationDate DateTime
+  categoryId      String
+  category        Category          @relation(fields: [categoryId], references: [id])
+  reviews         ReviewAndRating[]
+}
+
+model ReviewAndRating {
+  id     String @id @default(uuid())
+  review String
+  rating Int
+  userId String
+  bookId String
+  book   Book   @relation(fields: [bookId], references: [id])
+}
+
+model Order {
+  id           String   @id @default(uuid())
+  userId       String
+  orderedBooks Json[]
+  status       String   @default("pending")
+  createdAt    DateTime
+  user         User     @relation(fields: [userId], references: [id])
 }
