@@ -1,5 +1,6 @@
-import app from './app'; // Use ES6-style import
+// import app from './app'; // Use ES6-style import
 
+import { app } from './app';
 import config from './config/index'; // Use ES6-style import
 
 const port = process.env.PORT || 3000;
