@@ -12,9 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserService = void 0;
+exports.UserService = exports.loginUser = void 0;
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
+const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
+const http_status_1 = __importDefault(require("http-status"));
+const createJwtToken_1 = require("../../../helpers/createJwtToken");
 const selectObject = {
     id: true,
     name: true,
@@ -73,10 +76,29 @@ const deleteOneUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return result;
 });
+const loginUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = user;
+    const isUserExist = yield prisma_1.default.user.findUnique({ where: {
+            email: email,
+            password: password
+        } });
+    if (!isUserExist) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'User dose not exist !');
+    }
+    const { id: userId, role } = isUserExist;
+    const accessToken = (0, createJwtToken_1.createToken)({ userId, role }, process.env.JWT_ACCESS_SECRET, process.env.JWT_EXPIRES_IN);
+    const refreshToken = (0, createJwtToken_1.createToken)({ userId, role }, process.env.JWT_REFRESH_SECRET, process.env.JWT_REFRESH_EXPIRES);
+    return {
+        accessToken,
+        refreshToken,
+    };
+});
+exports.loginUser = loginUser;
 exports.UserService = {
     insertIntoDB,
     getAllFromDB,
     getSingleUserFromDB,
     updateOneUser,
     deleteOneUser,
+    loginUser: exports.loginUser
 };

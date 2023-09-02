@@ -38,8 +38,8 @@ const getAllFromDB = async (
     }
 
     const andConditions = [];
-    
-    if (search !== undefined) {  
+
+    if (search !== undefined) {
         andConditions.push({
             OR: bookSearchableFields.map((field) => ({
                 [field]: {
@@ -48,7 +48,7 @@ const getAllFromDB = async (
                 },
             })),
         });
-    } 
+    }
 
     if (minPrice !== undefined) {
         andConditions.push({
@@ -104,7 +104,7 @@ const getSingleBookFromDB = async (id: string): Promise<Partial<Book> | null> =>
         },
         include: {
             category: true,
-            orderedBook: true,
+
             reviews: true
         }
     });
@@ -118,7 +118,7 @@ const getSingleBookFromDBCategoryId = async (id: string): Promise<Book[]> => {
         },
         include: {
             category: true,
-            orderedBook: true,
+
             reviews: true
         }
     });

@@ -46,7 +46,7 @@ model Book {
   categoryId      String
   category        Category          @relation(fields: [categoryId], references: [id])
   reviews         ReviewAndRating[]
-  orderedBook         OrderedBook[]
+  // orderedBook         OrderedBook[]
 }
 
 model ReviewAndRating {
@@ -62,17 +62,19 @@ model Order {
   id           String   @id @default(uuid())
   userId       String
   orderedBooks Json[]
-  status       String   @default("pending")
-  createdAt    DateTime
+  status      String   @default("pending")
+  createdAt    DateTime @default(now())
   user         User     @relation(fields: [userId], references: [id])
-  orderedBook OrderedBook[]
+  // orderedBook       OrderedBook     @relation(fields: [orderedBooks], references: [id])
+  // orderedBook OrderedBook[]
 }
-// OrderedBook model (Approach 2)
-model OrderedBook {
-  id        String    @id @default(uuid())
-  orderId   String
-  bookId    String
-  quantity  Int
-  order     Order   @relation(fields: [orderId], references: [id])
-  book      Book    @relation(fields: [bookId], references: [id])
-}
+
+// model OrderedBook {
+//   id        String    @id @default(uuid())
+//   orderId   String
+//   bookId    String
+//   quantity  Int
+//   // order     Order   @relation(fields: [orderId], references: [id])
+//   book      Book    @relation(fields: [bookId], references: [id])
+//   order Order[]
+// }

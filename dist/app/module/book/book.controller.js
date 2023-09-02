@@ -46,6 +46,15 @@ const getSingleBookFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(vo
         data: result
     });
 }));
+const getSingleBookFromDBCategoryId = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield book_service_1.BookService.getSingleBookFromDBCategoryId(req.params.categoryId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'One Book get successfully',
+        data: result
+    });
+}));
 const updateOneBook = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield book_service_1.BookService.updateOneBook(req.params.id, req.body);
     (0, sendResponse_1.default)(res, {
@@ -69,5 +78,6 @@ exports.BookController = {
     getAllFromDB,
     getSingleBookFromDB,
     updateOneBook,
-    deleteOneBook
+    deleteOneBook,
+    getSingleBookFromDBCategoryId
 };

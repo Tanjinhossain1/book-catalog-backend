@@ -44,7 +44,7 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
         orderBy.push({ publicationDate: 'desc' });
     }
     const andConditions = [];
-    if (search) {
+    if (search !== undefined) {
         andConditions.push({
             OR: book_constant_1.bookSearchableFields.map((field) => ({
                 [field]: {
@@ -74,12 +74,6 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
         });
     }
     const whereConditions = andConditions.length > 0 ? { AND: andConditions } : {};
-    whereConditions.OR = book_constant_1.bookSearchableFields.map((field) => ({
-        [field]: {
-            contains: search,
-            mode: 'insensitive',
-        },
-    }));
     const result = yield prisma_1.default.book.findMany({
         where: whereConditions,
         skip,
@@ -105,7 +99,18 @@ const getSingleBookFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
         },
         include: {
             category: true,
-            orderedBook: true,
+            reviews: true
+        }
+    });
+    return result;
+});
+const getSingleBookFromDBCategoryId = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.book.findMany({
+        where: {
+            categoryId: id
+        },
+        include: {
+            category: true,
             reviews: true
         }
     });
@@ -132,6 +137,7 @@ exports.BookService = {
     insertIntoDB,
     getAllFromDB,
     getSingleBookFromDB,
+    getSingleBookFromDBCategoryId,
     updateOneBook,
     deleteOneBook,
 };

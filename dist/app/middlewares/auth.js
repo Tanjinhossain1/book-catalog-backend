@@ -13,9 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_status_1 = __importDefault(require("http-status"));
-const config_1 = __importDefault(require("../../config"));
 const ApiError_1 = __importDefault(require("../../errors/ApiError"));
-const jwtHelpers_1 = require("../../helpers/jwtHelpers");
+const createJwtToken_1 = require("../../helpers/createJwtToken");
 const auth = (...requiredRoles) => (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //get authorization token
@@ -25,8 +24,8 @@ const auth = (...requiredRoles) => (req, res, next) => __awaiter(void 0, void 0,
         }
         // verify token
         let verifiedUser = null;
-        verifiedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
-        req.user = verifiedUser; // role  , userid
+        verifiedUser = (0, createJwtToken_1.verifyToken)(token, process.env.JWT_ACCESS_SECRET);
+        req.user = verifiedUser; // role, userid
         // role diye guard korar jnno
         if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
             throw new ApiError_1.default(http_status_1.default.FORBIDDEN, 'Forbidden');
