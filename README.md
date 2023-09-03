@@ -33,5 +33,10 @@
   <li>https://book-catalogs-server-tanjinhossain1.vercel.app/api/v1/orders (GET) if admin then show all orders, and if any customer then show only that customer orders (add authorization in headers)</li>
 </ul>
 
+### Bonus Part
+<ul>
+  <li>https://book-catalogs-server-tanjinhossain1.vercel.app/api/v1/orders/:orderId  </li> with a specific user (add authorization in headers)
+   <li>https://book-catalogs-server-tanjinhossain1.vercel.app/api/v1/profile  </li> with a specific user (add authorization in headers)
+</ul>
 
 
