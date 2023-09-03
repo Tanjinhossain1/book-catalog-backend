@@ -94,11 +94,21 @@ const loginUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     };
 });
 exports.loginUser = loginUser;
+const getUserProfile = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.user.findUnique({
+        where: {
+            id: userId
+        },
+        select: selectObject
+    });
+    return result;
+});
 exports.UserService = {
     insertIntoDB,
     getAllFromDB,
     getSingleUserFromDB,
     updateOneUser,
     deleteOneUser,
-    loginUser: exports.loginUser
+    loginUser: exports.loginUser,
+    getUserProfile
 };

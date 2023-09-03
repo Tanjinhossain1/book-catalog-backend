@@ -114,11 +114,23 @@ export const loginUser = async (
       refreshToken,
     };
   };
+  
+
+const getUserProfile = async (userId: string): Promise<Partial<User> | null> => {
+    const result = await prisma.user.findUnique({
+        where: {
+           id: userId
+        }, 
+        select: selectObject
+    });
+    return result;
+};
 export const UserService = {
     insertIntoDB,
     getAllFromDB,
     getSingleUserFromDB,
     updateOneUser,
     deleteOneUser,
-    loginUser
+    loginUser,
+    getUserProfile
 }

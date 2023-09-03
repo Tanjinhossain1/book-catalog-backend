@@ -11,6 +11,7 @@ router.patch('/user/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.updateOneUs
 router.delete('/user/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.deleteOneUser);
 
 router.get('/user', auth(ENUM_USER_ROLE.ADMIN), UserController.getAllFromDB);
+router.get('/profile',  UserController.getUserProfile);
 
 router.post('/auth/signIn', UserController.loginUser);
 router.post(

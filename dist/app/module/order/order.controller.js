@@ -43,7 +43,18 @@ const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         data: result
     });
 }));
+const getOneFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const verifyTokenValue = (0, createJwtToken_1.verifyToken)(req.headers.authorization, process.env.JWT_ACCESS_SECRET);
+    const result = yield order_service_1.OrderService.getOneFromDB(req.params.id, verifyTokenValue);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Order fetched successfully',
+        data: result
+    });
+}));
 exports.OrderController = {
     insertIntoDB,
-    getAllFromDB
+    getAllFromDB,
+    getOneFromDB
 };

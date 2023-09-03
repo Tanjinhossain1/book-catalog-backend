@@ -5,6 +5,8 @@ import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
 import { UserService } from "./user.service";
 import { ILoginUserResponseType } from "./user.interface";
+import { verifyToken } from "../../../helpers/createJwtToken";
+import { Secret } from "jsonwebtoken";
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
     const result = await UserService.insertIntoDB(req.body);
@@ -79,11 +81,24 @@ export const loginUser = catchAsync(
       });
     }
   );
+  
+const getUserProfile = catchAsync(async (req: Request, res: Response) => {
+    const verifyTokenValue = verifyToken(req.headers.authorization as string, process.env.JWT_ACCESS_SECRET as Secret);
+
+    const result = await UserService.getUserProfile(verifyTokenValue.userId);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Profile Retrieved successfully',
+        data: result
+    });
+})
 export const UserController = {
     insertIntoDB,
     getAllFromDB,
     getSingleUserFromDB,
     updateOneUser,
     deleteOneUser,
-    loginUser
+    loginUser,
+    getUserProfile
 };

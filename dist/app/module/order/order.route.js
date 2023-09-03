@@ -10,5 +10,6 @@ const user_1 = require("../../../enums/user");
 const order_controller_1 = require("./order.controller");
 const router = express_1.default.Router();
 router.get('/', order_controller_1.OrderController.getAllFromDB);
+router.get('/:id', order_controller_1.OrderController.getOneFromDB);
 router.post('/create-order', (0, auth_1.default)(user_1.ENUM_USER_ROLE.CUSTOMER), order_controller_1.OrderController.insertIntoDB);
 exports.OrderRouter = router;

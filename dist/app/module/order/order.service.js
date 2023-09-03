@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderService = void 0;
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
 const user_1 = require("../../../enums/user");
+const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
+const http_status_1 = __importDefault(require("http-status"));
 const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
     // Create the order and get its ID
     const order = yield prisma_1.default.order.create({
@@ -36,7 +38,26 @@ const getAllFromDB = (verifyTokenValue) => __awaiter(void 0, void 0, void 0, fun
     }
     return result;
 });
+const getOneFromDB = (id, verifyTokenValue) => __awaiter(void 0, void 0, void 0, function* () {
+    let result = [];
+    if (verifyTokenValue.role === user_1.ENUM_USER_ROLE.ADMIN) {
+        result = yield prisma_1.default.order.findMany({ where: { id } });
+    }
+    else {
+        result = yield prisma_1.default.order.findMany({
+            where: {
+                userId: verifyTokenValue.userId,
+                id: id
+            }
+        });
+    }
+    if (result && !result[0]) {
+        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "This Order is Not your");
+    }
+    return result;
+});
 exports.OrderService = {
     insertIntoDB,
-    getAllFromDB
+    getAllFromDB,
+    getOneFromDB
 };

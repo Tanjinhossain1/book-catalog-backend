@@ -13,6 +13,7 @@ router.get('/user/:id', user_controller_1.UserController.getSingleUserFromDB);
 router.patch('/user/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), user_controller_1.UserController.updateOneUser);
 router.delete('/user/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), user_controller_1.UserController.deleteOneUser);
 router.get('/user', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), user_controller_1.UserController.getAllFromDB);
+router.get('/profile', user_controller_1.UserController.getUserProfile);
 router.post('/auth/signIn', user_controller_1.UserController.loginUser);
 router.post('/auth/signup', user_controller_1.UserController.insertIntoDB);
 exports.UserRouter = router;

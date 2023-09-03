@@ -29,6 +29,7 @@ const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const pick_1 = __importDefault(require("../../../shared/pick"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const user_service_1 = require("./user.service");
+const createJwtToken_1 = require("../../../helpers/createJwtToken");
 const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_service_1.UserService.insertIntoDB(req.body);
     (0, sendResponse_1.default)(res, {
@@ -91,11 +92,22 @@ exports.loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         data: others,
     });
 }));
+const getUserProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const verifyTokenValue = (0, createJwtToken_1.verifyToken)(req.headers.authorization, process.env.JWT_ACCESS_SECRET);
+    const result = yield user_service_1.UserService.getUserProfile(verifyTokenValue.userId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Profile Retrieved successfully',
+        data: result
+    });
+}));
 exports.UserController = {
     insertIntoDB,
     getAllFromDB,
     getSingleUserFromDB,
     updateOneUser,
     deleteOneUser,
-    loginUser: exports.loginUser
+    loginUser: exports.loginUser,
+    getUserProfile
 };

@@ -7,9 +7,9 @@ import { verifyToken } from "../../../helpers/createJwtToken";
 import { Secret } from "jsonwebtoken";
 import { OrderRouter } from "./order.route";
 
-const insertIntoDB = catchAsync(async (req: Request, res: Response) => { 
-    const {userId} =  verifyToken(req.headers.authorization as string, process.env.JWT_ACCESS_SECRET as Secret);
-    const {orderedBooks} = req.body
+const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
+    const { userId } = verifyToken(req.headers.authorization as string, process.env.JWT_ACCESS_SECRET as Secret);
+    const { orderedBooks } = req.body
     const data = {
         userId,
         orderedBooks,
@@ -24,7 +24,7 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 })
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-    const verifyTokenValue =  verifyToken(req.headers.authorization as string, process.env.JWT_ACCESS_SECRET as Secret);
+    const verifyTokenValue = verifyToken(req.headers.authorization as string, process.env.JWT_ACCESS_SECRET as Secret);
 
     const result = await OrderService.getAllFromDB(verifyTokenValue);
     sendResponse(res, {
@@ -34,7 +34,19 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
         data: result
     });
 })
-export  const OrderController = {
+const getOneFromDB = catchAsync(async (req: Request, res: Response) => {
+    const verifyTokenValue = verifyToken(req.headers.authorization as string, process.env.JWT_ACCESS_SECRET as Secret);
+
+    const result = await OrderService.getOneFromDB(req.params.id, verifyTokenValue);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Order fetched successfully',
+        data: result
+    });
+})
+export const OrderController = {
     insertIntoDB,
-    getAllFromDB
+    getAllFromDB,
+    getOneFromDB
 }
