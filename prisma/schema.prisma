@@ -14,18 +14,13 @@ model User {
   name       String
   email      String       @unique
   password   String
-  role       AllUserRoles
+  role       String
   contactNo  String?
   address    String?
   profileImg String?
   orders     Order[]
 
   @@map("user")
-}
-
-enum AllUserRoles {
-  ADMIN
-  CUSTOMER
 }
 
 // schema.prisma
